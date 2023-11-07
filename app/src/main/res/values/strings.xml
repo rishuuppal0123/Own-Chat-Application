@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">OwnChatApp</string>
+    <string name="api_key">YOUR_API_KEY</string>
+    <string name="jwt_token">YOUR_JWT_TOKEN</string>
+    <string name="text_enter_username">Enter Username</string>
+    <string name="text_login_as_user">Login as a User</string>
+    <string name="text_login_as_guest">Login as a Guest</string>
+    <string name="invalid_username">Invalid Name! Enter more than 3 characters.</string>
+    <string name="error">Error</string>
+    <string name="login_successful">Login Successful!</string>
+    <string name="invalid_name">Invalid Name</string>
+    <string name="your_channels">Your Channels</string>
+    <string name="empty_channel">The channel name can\'t be empty.</string>
+    <string name="enter_channel_name">Enter Channel Name</string>
+    <string name="create_channel">Create Channel</string>
+    <string name="channel_created_successfully">Channel created successfully!</string>
+    <string name="are_you_sure_to_logout">Sure to Logout?</string>
+</resources>
