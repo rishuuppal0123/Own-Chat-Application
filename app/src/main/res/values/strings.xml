@@ -15,4 +15,9 @@
     <string name="create_channel">Create Channel</string>
     <string name="channel_created_successfully">Channel created successfully!</string>
     <string name="are_you_sure_to_logout">Sure to Logout?</string>
+    <string name="developed_with">Developed with</string>
+    <string name="text_welcome">Welcome !</string>
+    <string name="copyright_reserved">Copyright reserved.</string>
+    <string name="text_enter_name">Enter Name</string>
+    <string name="sign_up">Sign Up</string>
 </resources>

@@ -87,22 +87,27 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    implementation ("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-compiler:2.44")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    implementation("com.google.dagger:hilt-android:2.44.2")
+    kapt("com.google.dagger:hilt-compiler:2.44.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
+    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha13")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha13")
 
-    implementation ("io.getstream:stream-chat-android-client:6.0.2")
-    implementation ("io.getstream:stream-chat-android-state:6.0.2")
-    implementation ("io.getstream:stream-chat-android-compose:6.0.2")
-    implementation ("io.getstream:stream-chat-android-offline:6.0.2")
-    implementation ("io.getstream:stream-chat-android-compose:6.0.2")
+    implementation("io.getstream:stream-chat-android-client:6.0.2")
+    implementation("io.getstream:stream-chat-android-state:6.0.2")
+    implementation("io.getstream:stream-chat-android-compose:6.0.2")
+    implementation("io.getstream:stream-chat-android-offline:6.0.2")
+    implementation("io.getstream:stream-chat-android-compose:6.0.2")
 
-    implementation ("androidx.compose.material:material-icons-extended:1.5.4")
-
-    implementation ("io.coil-kt:coil:2.4.0")
-
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation("com.google.android.material:material:1.10.0")
+    implementation("androidx.compose.ui:ui-unit:1.5.4")
+    implementation("io.coil-kt:coil:2.4.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("io.coil-kt:coil-svg:2.4.0")
 }
 

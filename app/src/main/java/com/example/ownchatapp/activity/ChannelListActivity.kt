@@ -18,22 +18,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -50,7 +46,6 @@ import com.example.ownchatapp.events.ChannelEvents
 import com.example.ownchatapp.viewModel.ChannelListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import io.getstream.chat.android.compose.ui.channels.ChannelsScreen
-import io.getstream.chat.android.compose.ui.channels.list.ChannelList
 import io.getstream.chat.android.compose.ui.theme.ChatTheme
 import kotlinx.coroutines.launch
 
@@ -76,7 +71,10 @@ class ChannelListActivity : ComponentActivity() {
 
                 if (showDialog) {
                     CreateChannelDialog(
-                        dismissDialog = { channelName ->
+                        onDismiss = {
+                            showDialog = false
+                        },
+                        createChannel = { channelName ->
                             viewModel.createChannel(channelName)
                             showDialog = false
                         }
@@ -87,8 +85,8 @@ class ChannelListActivity : ComponentActivity() {
                         showLogoutDialog = false
                     }, onConfirm = {
                         viewModel.logout()
-                        finish()
                         startActivity(Intent(this, LoginActivity::class.java))
+                        finish()
                     })
                 }
                 ChannelsScreen(
@@ -113,14 +111,15 @@ class ChannelListActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun CreateChannelDialog(
-        dismissDialog: (String) -> Unit
+        onDismiss: () -> Unit,
+        createChannel: (String) -> Unit
     ) {
         var channelName by remember {
             mutableStateOf("")
         }
         AlertDialog(
             onDismissRequest = {
-                dismissDialog(channelName)
+                onDismiss()
             },
             title = {
                 Text(text = stringResource(id = R.string.enter_channel_name))
@@ -135,7 +134,7 @@ class ChannelListActivity : ComponentActivity() {
             confirmButton = {
                 Button(
                     onClick = {
-                        dismissDialog(channelName)
+                        createChannel(channelName)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = channelName.isNotEmpty()
@@ -208,7 +207,7 @@ class ChannelListActivity : ComponentActivity() {
                         modifier = Modifier.weight(1f),
                         contentPadding = PaddingValues(4.dp),
                         onClick = onDismiss,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Blue )
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
                     ) {
                         Text("No")
                     }
@@ -216,7 +215,7 @@ class ChannelListActivity : ComponentActivity() {
                         modifier = Modifier.weight(1f),
                         contentPadding = PaddingValues(4.dp),
                         onClick = onConfirm,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Blue )
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
                     ) {
                         Text("Yes")
                     }

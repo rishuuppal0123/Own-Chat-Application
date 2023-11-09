@@ -28,17 +28,27 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState.asStateFlow()
 
-    private fun isValidUsername(username: String): Boolean {
-        return username.length >= Constants.MIN_USERNAME_LENGTH
+    private fun isValidUserName(username: String): Boolean {
+        return !username.contains(" ") && username.length >= Constants.MIN_USERNAME_LENGTH
     }
 
-    fun editName(userName: TextFieldValue) {
-        val isValidName = isValidUsername(userName.text)
+    fun editName(name: TextFieldValue) {
+        val isValidName = name.text.length >= Constants.MIN_USERNAME_LENGTH
         _uiState.update {
             it.copy(
-                name = userName,
+                name = name,
                 btnEnable = isValidName,
                 nameError = if (!isValidName) R.string.invalid_name else null
+            )
+        }
+    }
+
+    fun editUserName(userName: TextFieldValue) {
+        _uiState.update {
+            it.copy(
+                userName = userName,
+                btnEnable = isValidUserName(userName.text),
+                userNameError = if (!isValidUserName(userName.text)) R.string.invalid_name else null
             )
         }
     }
@@ -46,9 +56,9 @@ class LoginViewModel @Inject constructor(
     fun loginUser(userName: String, token: String? = null) {
         val trimmedUserName = userName.trim()
         viewModelScope.launch {
-            if (isValidUsername(userName) && token != null) {
+            if (isValidUserName(userName) && token != null) {
                 loginRegisteredUser(trimmedUserName, token)
-            } else if (isValidUsername(userName) && token == null) {
+            } else if (isValidUserName(userName) && token == null) {
                 loginGuestUser(trimmedUserName)
             }
         }
@@ -107,6 +117,8 @@ class LoginViewModel @Inject constructor(
     data class LoginUiState(
         val isLoading: Boolean = false,
         val name: TextFieldValue = TextFieldValue(),
+        val userName: TextFieldValue = TextFieldValue(),
+        val userNameError: Int? = null,
         val nameError: Int? = null,
         val btnEnable: Boolean = false
     )
