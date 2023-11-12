@@ -11,8 +11,12 @@ import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.models.User
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,16 +30,24 @@ class LoginViewModel @Inject constructor(
     val loginEvent = _loginEvent.asSharedFlow()
 
     private val _uiState = MutableStateFlow(LoginUiState())
-    val uiState = _uiState.asStateFlow()
+    val uiState: StateFlow<LoginUiState> = _uiState.flatMapLatest {
+        flow {
+            val showBtn =
+                _uiState.value.name.text.length >= Constants.MIN_USERNAME_LENGTH && isValidUserName(
+                    _uiState.value.userName.text
+                )
+            emit(
+                it.copy(btnEnable = showBtn)
+            )
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = LoginUiState()
+    )
 
     private fun isValidUserName(username: String): Boolean {
         return !username.contains(" ") && username.length >= Constants.MIN_USERNAME_LENGTH
-    }
-
-    private fun btnEnable(): Boolean {
-        return _uiState.value.name.text.length >= Constants.MIN_USERNAME_LENGTH && isValidUserName(
-            _uiState.value.userName.text
-        )
     }
 
     fun editName(name: TextFieldValue) {
@@ -43,7 +55,6 @@ class LoginViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 name = name,
-                btnEnable = btnEnable(),
                 nameError = if (!isValidName) R.string.invalid_name else null
             )
         }
@@ -53,7 +64,6 @@ class LoginViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 userName = userName,
-                btnEnable = btnEnable(),
                 userNameError = if (!isValidUserName(userName.text)) R.string.invalid_name else null
             )
         }
