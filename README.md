@@ -25,9 +25,6 @@ Welcome to the Own Chat Application! This application provides a platform for re
 
 To use the Android Chat Application, follow these steps:
 
-#### Download the APK:
-
-- Download the latest APK release from the link: "https://drive.google.com/file/d/1f7flh_7rOuzFFcP6RxBQE9i9--0X9HHk/view?usp=sharing"
 
 #### Install the APK:
 
