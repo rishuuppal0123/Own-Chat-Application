@@ -32,12 +32,18 @@ class LoginViewModel @Inject constructor(
         return !username.contains(" ") && username.length >= Constants.MIN_USERNAME_LENGTH
     }
 
+    private fun btnEnable(): Boolean {
+        return _uiState.value.name.text.length >= Constants.MIN_USERNAME_LENGTH && isValidUserName(
+            _uiState.value.userName.text
+        )
+    }
+
     fun editName(name: TextFieldValue) {
         val isValidName = name.text.length >= Constants.MIN_USERNAME_LENGTH
         _uiState.update {
             it.copy(
                 name = name,
-                btnEnable = isValidName,
+                btnEnable = btnEnable(),
                 nameError = if (!isValidName) R.string.invalid_name else null
             )
         }
@@ -47,7 +53,7 @@ class LoginViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 userName = userName,
-                btnEnable = isValidUserName(userName.text),
+                btnEnable = btnEnable(),
                 userNameError = if (!isValidUserName(userName.text)) R.string.invalid_name else null
             )
         }
